@@ -16,19 +16,19 @@ Instructions to deploy and run the application
       
     - Go into the bin folder inside the folder created (e.g. jboss-fuse-6.3.0.redhat-187)
 		
-		  $ cd jboss-fuse-6.3.0.redhat-187/bin
+		  	$ cd jboss-fuse-6.3.0.redhat-187/bin
 		
 	  - Run fuse
 	
-		  $ ./fuse
+		 	 $ ./fuse
 		  
 	  - Create a root fabric
 	  
-	  	fabric:create
+	  		fabric:create
 	  
 	  - Add the camel-soap feature
 	  	
-		fabric:profile-edit --feature mvn:org.apache/camel-soap jboss-fuse-full
+			fabric:profile-edit --feature mvn:org.apache/camel-soap jboss-fuse-full
     
 
 2. Build the project
