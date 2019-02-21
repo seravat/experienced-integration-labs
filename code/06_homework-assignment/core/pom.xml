@@ -14,7 +14,6 @@
   <groupId>com.customer.app</groupId>
   <artifactId>core</artifactId>
   <version>1.0</version>
-
   <packaging>pom</packaging>
 
   <name>Customer :: Application :: Core</name>
@@ -27,7 +26,7 @@
     <module>inbound</module>
     <module>xlate</module>
     <module>outbound</module>
-    <!-- <module>customer-features</module> -->
+    <module>customer-features</module>
   </modules>
   
 </project>
