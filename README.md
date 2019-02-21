@@ -45,12 +45,12 @@ Instructions to deploy and run the application
 		
 3. Deploy on karaf - deploy the individual projects (I was not able to make the features work - problem with the local maven repo)
 		
-	JBossFuse:karaf@root> osgi:install mvn:com.customer.app/artifacts/1.0-SNAPSHOT
-	JBossFuse:karaf@root> osgi:install mvn:com.customer.app/mq-service/1.0-SNAPSHOT
-	JBossFuse:karaf@root> osgi:install mvn:com.customer.app/integration-test-server/1.0-SNAPSHOT
-	JBossFuse:karaf@root> osgi:install mvn:com.customer.app/inbound/1.0-SNAPSHOT
-	JBossFuse:karaf@root> osgi:install mvn:com.customer.app/outbound/1.0-SNAPSHOT
-	JBossFuse:karaf@root> osgi:install mvn:com.customer.app/xlate/1.0-SNAPSHOT
+		JBossFuse:karaf@root> osgi:install mvn:com.customer.app/artifacts/1.0-SNAPSHOT
+		JBossFuse:karaf@root> osgi:install mvn:com.customer.app/mq-service/1.0-SNAPSHOT
+		JBossFuse:karaf@root> osgi:install mvn:com.customer.app/integration-test-server/1.0-SNAPSHOT
+		JBossFuse:karaf@root> osgi:install mvn:com.customer.app/inbound/1.0-SNAPSHOT
+		JBossFuse:karaf@root> osgi:install mvn:com.customer.app/outbound/1.0-SNAPSHOT
+		JBossFuse:karaf@root> osgi:install mvn:com.customer.app/xlate/1.0-SNAPSHOT
 	
 	- Check the IDs of the deployed artifacts
 		JBossFuse:karaf@root> osgi:list
