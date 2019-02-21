@@ -21,6 +21,14 @@ Instructions to deploy and run the application
 	  - Run fuse
 	
 		  $ ./fuse
+		  
+	  - Create a root fabric
+	  
+	  	fabric:create
+	  
+	  - Add the camel-soap feature
+	  	
+		fabric:profile-edit --feature mvn:org.apache/camel-soap jboss-fuse-full
     
 
 2. Build the project
@@ -31,26 +39,30 @@ Instructions to deploy and run the application
 		  $ mvn clean install
     
 	- Open a Terminal and locate the core folder
-	- Run the command bellow
+	- Run the command bellow (with skip tests since the webservice is not running yet)
 		
-		  $ mvn clean install
+		  $ mvn clean install -DskipTests
 		
-3. Deploy on karaf
+3. Deploy on karaf - deploy the individual projects (I was not able to make the features work - problem with the local maven repo)
 		
-	- Add the feature URL
+	JBossFuse:karaf@root> osgi:install mvn:com.customer.app/artifacts/1.0-SNAPSHOT
+	JBossFuse:karaf@root> osgi:install mvn:com.customer.app/mq-service/1.0-SNAPSHOT
+	JBossFuse:karaf@root> osgi:install mvn:com.customer.app/integration-test-server/1.0-SNAPSHOT
+	JBossFuse:karaf@root> osgi:install mvn:com.customer.app/inbound/1.0-SNAPSHOT
+	JBossFuse:karaf@root> osgi:install mvn:com.customer.app/outbound/1.0-SNAPSHOT
+	JBossFuse:karaf@root> osgi:install mvn:com.customer.app/xlate/1.0-SNAPSHOT
 	
-		JBossFuse:karaf@root> features:addurl mvn:com.customer.app/features/1.0-SNAPSHOT/xml/features
-		
-	- Install the customer-app-01 feature
+	- Check the IDs of the deployed artifacts
+		JBossFuse:karaf@root> osgi:list
 	
-		JBossFuse:karaf@root> features:install customer-app-01
+	- Start the projects with the id of the deployed artifact:
+		JBossFuse:karaf@root> osgi:start 346
 	
-	- Set the logging level of "com.redhat.usecase" to DEBUG
-	
-		JBossFuse:karaf@root> log:set DEBUG com.redhat.usecase
-    
     
 4. Test
+
+  - Use the following command to confirm the services are working
+  	JBossFuse:karaf@root> log:tail
 
   - Go to http://localhost:8181/cxf to make sure the REST and SOAP services are running
 	
@@ -78,6 +90,8 @@ Instructions to deploy and run the application
         <p:code>Male</p:code>
       </p:gender>
     </p:Person>' -H 'content-type: application/xml'
+    
+      
 
 
 		
