@@ -78,9 +78,9 @@ Ignore this last topic:
     
 4. Test
 
-  - Run the following command to test all the projects individually with JUnit
+  - Run the following command to test all the projects individually and also the core root project with JUnit
   	
- 		$ mvn clean install -DskipTests
+ 		$ mvn clean install
 
   - Use the following command to confirm the services are working
   
