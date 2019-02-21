@@ -16,10 +16,32 @@
   <name>Customer :: Application :: Core :: Inbound</name>
 
   <dependencies>
+  
+  	<!-- Logging -->
+  	<dependency>
+		<groupId>org.slf4j</groupId>
+		<artifactId>slf4j-api</artifactId>
+	</dependency>
+	<dependency>
+		<groupId>org.slf4j</groupId>
+		<artifactId>slf4j-log4j12</artifactId>
+	</dependency>
     <dependency>
       <groupId>org.apache.camel</groupId>
       <artifactId>camel-spring</artifactId>
     </dependency>
+    <dependency>
+		<groupId>org.apache.camel</groupId>
+		<artifactId>camel-core</artifactId>
+	</dependency>
+	<dependency>
+		<groupId>org.apache.camel</groupId>
+		<artifactId>camel-cxf</artifactId>
+	</dependency>
+	<dependency>
+		<groupId>org.apache.camel</groupId>
+		<artifactId>camel-jaxb</artifactId>
+	</dependency>
     <dependency>
       <groupId>org.apache.cxf</groupId>
       <artifactId>cxf-rt-transports-http-jetty</artifactId>
@@ -42,8 +64,35 @@
       <artifactId>artifacts</artifactId>
       <version>1.0-SNAPSHOT</version>
     </dependency>
-  </dependencies>
+    
+    <!-- testing -->
+	<dependency>
+		<groupId>junit</groupId>
+		<artifactId>junit</artifactId>
+		<scope>test</scope>
+	</dependency>
+	<dependency>
+		<groupId>org.apache.camel</groupId>
+		<artifactId>camel-test-spring</artifactId>
+		<scope>test</scope>
+	</dependency>
+	
+	<!-- Active mq -->
+	<dependency>
+		<groupId>org.apache.activemq</groupId>
+		<artifactId>activemq-client</artifactId>
+	</dependency>
+	<dependency>
+		<groupId>org.apache.activemq</groupId>
+		<artifactId>activemq-camel</artifactId>
+	</dependency>
+	<dependency>
+		<groupId>org.apache.activemq</groupId>
+		<artifactId>activemq-pool</artifactId>
+	</dependency>
 
+  </dependencies>
+  
   <build>
     <plugins>
       <plugin>
@@ -53,10 +102,50 @@
         <configuration>
           <instructions>
             <Bundle-SymbolicName>${project.artifactId}</Bundle-SymbolicName>
+            <Bundle-Name>Customer Application Core (Application Core) - ${project.artifactId}</Bundle-Name>
             <Import-Package>com.customer.app,*</Import-Package>
           </instructions>
         </configuration>
       </plugin>
+      
+      <plugin>
+		<groupId>org.codehaus.mojo</groupId>
+		<artifactId>build-helper-maven-plugin</artifactId>
+		<version>1.9.1</version>
+		<executions>
+			<execution>
+				<id>attach-artifacts</id>
+				<phase>package</phase>
+				<goals>
+					<goal>attach-artifact</goal>
+				</goals>
+				<configuration>
+					<artifacts>
+						<artifact>
+							<file>target/classes/features.xml</file>
+							<type>xml</type>
+							<classifier>features</classifier>
+						</artifact>
+					</artifacts>
+				</configuration>
+			</execution>
+		</executions>
+	  </plugin>
+	  
+ 	  <plugin>
+		<groupId>io.fabric8</groupId>
+		<artifactId>fabric8-maven-plugin</artifactId>
+		<version>1.2.0.redhat-630187</version>
+		<configuration>
+			<properties>
+				<property>
+					<fabric8.profile>inbound-profile</fabric8.profile>
+					<fabric8.parentProfiles>feature-camel</fabric8.parentProfiles>
+				</property>
+			</properties>
+		</configuration>
+	  </plugin>
+	  
     </plugins>
   </build>
 

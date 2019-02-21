@@ -5,6 +5,7 @@ import org.apache.camel.Exchange;
 import org.apache.camel.TypeConversionException;
 
 import com.customer.app.Person;
+import com.customer.app.PersonName;
 import com.sun.mdm.index.webservice.CallerInfo;
 import com.sun.mdm.index.webservice.ExecuteMatchUpdate;
 import com.sun.mdm.index.webservice.PersonBean;
@@ -23,9 +24,25 @@ public class TransformToExecuteMatch {
 
     // we only set the Father's name and Gender
     // Any of the other person objects could be set here
-    personBean.setFirstName(person.getLegalname().getGiven());
-    personBean.setFatherName(person.getFathername());
-    personBean.setGender(person.getGender().getCode());
+    if(person.getLegalname() != null) {
+    	if(person.getLegalname().getGiven() != null)
+    		personBean.setFirstName(person.getLegalname().getGiven());
+    }
+    if(person.getFathername()!=null)
+    	personBean.setFatherName(person.getFathername());
+    if(person.getGender() != null) {
+    	if(person.getGender().getCode() != null)
+    		personBean.setGender(person.getGender().getCode());
+    }
+    	
+    if(person.getIdentifier()!= null) {
+    	if(person.getIdentifier().getIdentifier()!= null)
+    		personBean.setPersonId(person.getIdentifier().getIdentifier());
+    }
+    if(person.getBirthname()!= null) {
+    	personBean.setFirstName(person.getBirthname());
+    }
+    	
     systemPerson.setPerson(personBean);
 
     // These only show up in the logs and can be anything

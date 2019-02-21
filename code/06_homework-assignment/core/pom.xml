@@ -27,7 +27,7 @@
     <module>inbound</module>
     <module>xlate</module>
     <module>outbound</module>
-    <module>customer-features</module>
+    <!-- <module>customer-features</module> -->
   </modules>
   
 </project>

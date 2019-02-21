@@ -7,9 +7,8 @@
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd   http://camel.apache.org/schema/spring http://camel.apache.org/schema/spring/camel-spring.xsd   http://cxf.apache.org/jaxrs http://cxf.apache.org/schemas/jaxrs.xsd   http://www.springframework.org/schema/osgi http://www.springframework.org/schema/osgi/spring-osgi.xsd   http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
     <!-- This reference just lets all of our routes use the same
   connection pool set up in the mq-service project -->
-    <osgi:reference id="activemqService" interface="org.apache.camel.Component"/>
     <bean class="com.redhat.usecase.service.impl.DEIMServiceImpl" id="demographicImpl"/>
-    <jaxrs:server address="http://localhost:9098/cxf/demos" id="demoGraphicsService">
+    <jaxrs:server address="http://localhost:9099/cxf/demos" id="demoGraphicsService">
         <jaxrs:serviceBeans>
             <ref bean="demographicImpl"/>
         </jaxrs:serviceBeans>
@@ -27,42 +26,36 @@
                     <simple>${header.METHOD} contains 'add'</simple>
                     <log id="_log1" loggingLevel="DEBUG" message="Starting add..."/>
                     <to id="_to1" uri="direct:addPerson"/>
+                    <to id="_to4" uri="mock:result"/>
                 </when>
                 <when id="_when2">
                     <simple>${header.METHOD} contains 'update'</simple>
                     <log id="_log2" loggingLevel="DEBUG" message="Starting update..."/>
                     <to id="_to2" uri="direct:updatePerson"/>
+                    <to id="_to5" uri="mock:result"/>
                 </when>
                 <when id="_when3">
                     <simple>${header.METHOD} contains 'search'</simple>
                     <log id="_log3" loggingLevel="DEBUG" message="Starting search..."/>
                     <to id="_to3" uri="direct:searchPerson"/>
+                    <to id="_to6" uri="mock:result"/>
                 </when>
             </choice>
-            <!--             <marshal id="_marshal1" ref="personFormat"/>
-            <log id="_logInboundOut" message=">> Sent Message to queue q.empi.deim.in : ${body}"/>
-            <to id="_toActiveMQ" uri="activemqService:q.empi.deim.in?disableReplyTo=true&amp;asyncConsumer=true"/> -->
         </route>
         <route id="addRoute">
             <from id="_from2" uri="direct:addPerson"/>
             <log id="_log4" loggingLevel="DEBUG" message="Marshalling obj to xml..."/>
             <marshal id="_marshal1" ref="personFormat"/>
-            <log id="_log5" loggingLevel="DEBUG" message="Sending to queue..."/>
-            <to id="_toActiveMQ1" uri="activemqService:q.empi.deim.in?disableReplyTo=true&amp;asyncConsumer=true"/>
-        </route>
-        <route id="updateRoute">
-            <from id="_from3" uri="direct:updatePerson"/>
-            <log id="_log6" loggingLevel="DEBUG" message="Marshalling obj to xml..."/>
+            <unmarshal id="_unmarshal1" ref="personFormat"/>
+            <setHeader headerName="customerId" id="_setHeader1">
+                <simple>${body.getLocalid}</simple>
+            </setHeader>
             <marshal id="_marshal2" ref="personFormat"/>
-            <log id="_log7" loggingLevel="DEBUG" message="Sending to queue..."/>
-            <to id="_toActiveMQ2" uri="activemqService:q.empi.deim.in?disableReplyTo=true&amp;asyncConsumer=true"/>
-        </route>
-        <route id="searchRoute">
-            <from id="_from4" uri="direct:searchPerson"/>
-            <log id="_log8" loggingLevel="DEBUG" message="Marshalling obj to xml..."/>
-            <marshal id="_marshal3" ref="personFormat"/>
-            <log id="_log9" loggingLevel="DEBUG" message="Sending to queue..."/>
-            <to id="_toActiveMQ3" uri="activemqService:q.empi.deim.in?disableReplyTo=true&amp;asyncConsumer=true"/>
+            <log id="_log5" loggingLevel="DEBUG" message="Sending to queue..."/>
+            <to id="_toActiveMQ" uri="activemqService:q.empi.deim.in?disableReplyTo=true&amp;asyncConsumer=true"/>
+            <setBody id="_setBody1">
+                <simple><![CDATA[<reply id="${header.customerId}">Done!</reply>]]></simple>
+            </setBody>
         </route>
     </camelContext>
 </beans>
