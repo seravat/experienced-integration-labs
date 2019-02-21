@@ -36,14 +36,29 @@ Instructions to deploy and run the application
   	- Open a Terminal and locate the parent folder
 	  - Run the command bellow
 		
-		  $ mvn clean install
+		  $ mvn clean install -DskipTests
     
 	- Open a Terminal and locate the core folder
 	- Run the command bellow (with skip tests since the webservice is not running yet)
 		
 		  $ mvn clean install -DskipTests
 		
-3. Deploy on karaf - deploy the individual projects (I was not able to make the features work - problem with the local maven repo)
+3. Deploy on karaf
+	- Run the command to add the local repository
+	
+		JBossFuse:karaf@root> features:addurl mvn:com.customer.app/customer-features/1.0/xml/features
+		
+	- Run the command to install the features
+	
+		JBossFuse:karaf@root> features:install customer-app-01
+		
+	- Make sure the artifacts are running
+	
+		JBossFuse:karaf@root> osgi:list
+
+Ignore this last topic:
+(
+- deploy the individual projects (I was not able to make the features work - problem with the local maven repo)
 		
 		JBossFuse:karaf@root> osgi:install mvn:com.customer.app/artifacts/1.0-SNAPSHOT
 		JBossFuse:karaf@root> osgi:install mvn:com.customer.app/mq-service/1.0-SNAPSHOT
@@ -57,7 +72,7 @@ Instructions to deploy and run the application
 	
 	- Start the projects with the id of the deployed artifact:
 		JBossFuse:karaf@root> osgi:start 346
-	
+)	
     
 4. Test
 
