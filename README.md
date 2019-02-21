@@ -82,8 +82,9 @@ Ignore this last topic:
   	
  		$ mvn clean install
 
-  - Use the following command to confirm the services are working
-  
+  - Use the following commands to confirm the services are working
+  		
+		JBossFuse:karaf@root> log:set INFO
   		JBossFuse:karaf@root> log:tail
 
   - Go to http://localhost:8181/cxf to make sure the REST and SOAP services are running
