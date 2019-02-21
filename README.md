@@ -68,16 +68,23 @@ Ignore this last topic:
 		JBossFuse:karaf@root> osgi:install mvn:com.customer.app/xlate/1.0-SNAPSHOT
 	
 	- Check the IDs of the deployed artifacts
+	
 		JBossFuse:karaf@root> osgi:list
 	
 	- Start the projects with the id of the deployed artifact:
+	
 		JBossFuse:karaf@root> osgi:start 346
 )	
     
 4. Test
 
+  - Run the following command to test all the projects individually with JUnit
+  	
+ 		$ mvn clean install -DskipTests
+
   - Use the following command to confirm the services are working
-  	JBossFuse:karaf@root> log:tail
+  
+  		JBossFuse:karaf@root> log:tail
 
   - Go to http://localhost:8181/cxf to make sure the REST and SOAP services are running
 	
