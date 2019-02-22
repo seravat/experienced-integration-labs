@@ -11,3 +11,5 @@ This project takes the person request from the broker and converts it to our Jav
 The logic for the transformer is all in src/main/java/com/redhat/customer/translate/TransformToExecuteMatch.java
 
 Notice we set a few things ourselves, and others we pull out of the object. You could add more fields here if you wanted to. The Person file in the src/test/data directory is an example complete Person object will all of the fields. The SimplePerson file is just what we are using for this demo. It is what the converted rest fields should look like for the Match test.
+
+This application could contain several routes with different inputs queues for each input object we have (Person, Address,...)
