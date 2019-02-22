@@ -12,7 +12,7 @@ Instructions to deploy and run the application
     - Open a Terminal or Command and locate the jboss-fuse-karaf-6.3.0.redhat-187.zip
 	  - Extract unzing the command below:
 	
-		  $ unzip jboss-fuse-karaf-6.3.0.redhat-187.zip -d .
+			$ unzip jboss-fuse-karaf-6.3.0.redhat-187.zip -d .
       
     - Go into the bin folder inside the folder created (e.g. jboss-fuse-6.3.0.redhat-187)
 		
@@ -20,34 +20,55 @@ Instructions to deploy and run the application
 		
 	  - Run fuse
 	
-		 	 $ ./fuse    
+			$ ./fuse    
 
 2. Build the project
 
 	- Download the project zip or clone the git repo
+	
+	- The project root is at code/06_homework-assignment/core
 
-  	- Open a Terminal and locate the parent folder
+  	- Open a Terminal and locate the parent folder (code/06_homework-assignment/parent)
 	  	- Run the command bellow
 		
-		  $ mvn clean install -DskipTests
+		  mvn clean install -DskipTests
     
-	- Open a Terminal and locate the core folder
+	- Open a Terminal and locate the core folder (code/06_homework-assignment/core)
 		- Run the command bellow (with skip tests since the webservice is not running yet)
 		
-		  $ mvn clean install -DskipTests
-		
-3. Deploy on karaf
-	- Run the command to add the local repository
+		  mvn clean install -DskipTests
+		  
+	- Now that we have the necessary artifacts in the maven repo, we can deploy the support applications and test the important applications. In the terminal oppened to run fuse, run the following commands:
 	
-		JBossFuse:karaf@root> features:addurl mvn:com.customer.app/customer-features/1.0/xml/features
+		osgi:install mvn:com.customer.app/artifacts/1.0-SNAPSHOT
+		
+		osgi:install mvn:com.customer.app/mq-service/1.0-SNAPSHOT
+		
+		osgi:install mvn:com.customer.app/integration-test-server/1.0-SNAPSHOT
+		
+	- Start the deployed applications with:
+	
+		osgi:start {deployed bundle id}
+		
+	- Open a different terminal, locate the core folder (code/06_homework-assignment/core) and run:
+	
+		mvn clean install
+		
+	Every test should have passed.
+		
+		
+3. Deploy on karaf - return to the terminal running fuse
+	- Run the command to add the local repository with the features
+	
+		features:addurl mvn:com.customer.app/customer-features/1.0/xml/features
 		
 	- Run the command to install the features
 	
-		JBossFuse:karaf@root> features:install customer-app-01
+		features:install customer-app-01
 		
-	- Make sure the artifacts are running
+	- Make sure the bundles are running
 	
-		JBossFuse:karaf@root> osgi:list
+		osgi:list
 
 Ignore this last topic:
 (
@@ -69,16 +90,12 @@ Ignore this last topic:
 		JBossFuse:karaf@root> osgi:start 346
 )	
     
-4. Test
-
-  - Run the following command to test all the projects individually and also the core root project with JUnit
-  	
- 		$ mvn clean install
+4. Test - return to the terminal connected to fuse
 
   - Use the following commands to confirm the services are working
   		
-		JBossFuse:karaf@root> log:set INFO
-  		JBossFuse:karaf@root> log:tail
+		log:set INFO
+  		log:tail
 
   - Go to http://localhost:8181/cxf to make sure the REST and SOAP services are running
 	
@@ -109,8 +126,6 @@ Ignore this last topic:
     
       
 5. Conclusions
-
-- The testing should be done prior to the deployment, here it is done after for simplicity (would have to deploy the mq-service and the integration-test-server artifacts prior to testing).
 
 - As a different approach, we could have used different routes and output queues  in the INBOUND application for the different input objects (Person, Address,...) so that we can use different routes in XLATE and OUTBOUND applications. This way actual business objects and their operations are separated. 
 We can go further and have separate applications (at least XLATE) for each business object.
