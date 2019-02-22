@@ -1,4 +1,6 @@
-This demo will build a multi module Maven project that deploys to Standalone Fuse 6.2.1
+IGNORE THIS README FILE
+
+This demo will build a multi module Maven project that deploys to Standalone Fuse 3
 
 The project is organized like a repository should be on a real engagement. For this reason there are some empty or unused folders, but they should all have READMEs to explain what they would be used for.
 
@@ -23,15 +25,15 @@ This will build all of the projects below it including:
  * Inbound   - which runs a REST server and sends the message to a broker
  * Xlate     - which translates the message from the Person format to the NextGate format
  * Outbound  - which reads the final message from the broker and sends it to the NextGate sever
- * Features  - which builds a features file for easy installation of the entire project on Fuse
+ * Customer-Features  - which builds a features file for easy installation of the entire project on Fuse
 
 Once the build is complete go back to the Fuse Karaf shell and run the command:
 ~~~
-features:addurl mvn:com.customer.app/customer-features/1.0-SNAPSHOT/xml/features
+features:addurl mvn:com.customer.app/customer-features/1.0/xml/features
 ~~~
 This command tells Fuse where in the Maven repo to find the feature that we created. Then to install the customer app features file run the command:
 ~~~
-features:install customer-features
+features:install customer-app-01
 ~~~
 This will install all of the core bundles and their dependencies. To see all of the bundles that were installed and if they started properly you can run the command:
 ~~~
