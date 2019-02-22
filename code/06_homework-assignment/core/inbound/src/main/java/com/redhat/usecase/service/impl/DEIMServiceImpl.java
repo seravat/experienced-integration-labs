@@ -34,7 +34,7 @@ public class DEIMServiceImpl implements DEIMService {
 
   @Produce(uri = "direct:integrateRoute")
   ProducerTemplate template;
-
+  
   @Override
   @POST
   @Path("/persons")
