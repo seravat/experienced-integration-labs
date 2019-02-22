@@ -2,7 +2,7 @@ Contains the core application.
 
 Start by building the parent folder with
 ~~~
-mvn clean install
+mvn clean install -DskipTests
 ~~~
 
 Then build this folder with the same command
