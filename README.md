@@ -20,26 +20,19 @@ Instructions to deploy and run the application
 		
 	  - Run fuse
 	
-		 	 $ ./fuse
-		  
-	  - Create a root fabric
-	  
-	  		fabric:create
-	  
-	  - Add the camel-soap feature
-	  	
-			fabric:profile-edit --feature mvn:org.apache/camel-soap jboss-fuse-full
-    
+		 	 $ ./fuse    
 
 2. Build the project
 
+	- Download the project zip or clone the git repo
+
   	- Open a Terminal and locate the parent folder
-	  - Run the command bellow
+	  	- Run the command bellow
 		
 		  $ mvn clean install -DskipTests
     
 	- Open a Terminal and locate the core folder
-	- Run the command bellow (with skip tests since the webservice is not running yet)
+		- Run the command bellow (with skip tests since the webservice is not running yet)
 		
 		  $ mvn clean install -DskipTests
 		
@@ -115,6 +108,13 @@ Ignore this last topic:
     </p:Person>' -H 'content-type: application/xml'
     
       
+5. Conclusions
+
+- The testing should be done prior to the deployment, here it is done after for simplicity (would have to deploy the mq-service and the integration-test-server artifacts prior to testing).
+
+- As a different approach, we could have used different routes and output queues  in the INBOUND application for the different input objects (Person, Address,...) so that we can use different routes in XLATE and OUTBOUND applications. This way actual business objects and their operations are separated. 
+We can go further and have separate applications (at least XLATE) for each business object.
+
 
 
 		
